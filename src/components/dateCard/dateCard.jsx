@@ -8,6 +8,7 @@ const baseURL =
 const DateCard = () => {
   const [data, setData] = useState([]);
   const [check, setCheck] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [slot, setSlot] = useState([]);
   useEffect(() => {
     const requestData = async () => {
@@ -31,15 +32,11 @@ const DateCard = () => {
     "Nov",
     "Dec",
   ];
-  // console.log(prop,key)
-  // let now = new Date(data.date.substr(0, 10));
 
-  const clickHandler = (d,index) => {
-    // console.log(d,index);
-    setCheck(true)
-    // console.log(d.available)
-    setSlot(d.available)
-    // setSlot(prop);
+  const clickHandler = (d, index) => {
+    setCheck(true);
+    setSlot(d.available);
+    setActiveIndex(index);
   };
   return (
     <>
@@ -49,35 +46,27 @@ const DateCard = () => {
           return (
             <>
               <div
-                className="w-[4rem] flex flex-col border-2 border-[#456187]"
+                className={
+                  activeIndex === index
+                    ? "w-[3.5rem] flex flex-col border-2 border-[#456187] text-center rounded-md mx-2 py-2 px-1 bg-[#279125] text-[#fff] hover:bg-[#279125] hover:text-[#fff]"
+                    : "w-[3.5rem] flex flex-col border-2 border-[#456187] text-center rounded-md mx-2 py-2 px-1 hover:bg-[#279125] hover:text-[#fff]"
+                }
                 onClick={() => {
-                  clickHandler(d,index);
+                  clickHandler(d, index);
                 }}
               >
-                <p>{days[now.getDay()]}</p>
-                <p>{now.getDate()}</p>
-                <p>{months[now.getMonth()]}</p>
+                <p className="text-sm font-normal">{days[now.getDay()]}</p>
+                <p className="text-lg font-semibold">{now.getDate()}</p>
+                <p className="text-sm font-normal">{months[now.getMonth()]}</p>
               </div>
-              
             </>
           );
-          
         })}
       </div>
-      <h1>Select Slot</h1>
-      <SlotCard data={slot} slots={check}/>
-
-      {/* <div
-        className="w-[4rem] flex flex-col border-2 border-[#456187]"
-        onClick={() => {
-            // console.log(prop)
-            clickHandler(prop)
-        }}
-      >
-        <p>{days[now.getDay()]}</p>
-        <p>{now.getDate()}</p>
-        <p>{months[now.getMonth()]}</p>
-      </div> */}
+      <h1 className="text-[#1b1b1b] text-lg mt-8 font-semibold mb-3">
+        Select Slot
+      </h1>
+      <SlotCard data={slot} slots={check} />
     </>
   );
 };
